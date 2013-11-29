@@ -10,7 +10,7 @@ All the magic happens inside your browser, so all you will add here it's for you
 
 ###Install
 
-Just clone the project, add the index.html file somewhere on your disk or on a server and you're ready to go. 
+Just clone the project, add the startr.html file somewhere on your disk or on a server and you're ready to go. 
 
 
 ###Features
