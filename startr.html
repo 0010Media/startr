@@ -1,0 +1,252 @@
+<html>
+    <head>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.0/modernizr.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        
+        <style>
+            * {
+                font-family: Calibri, Ubuntu, Verdana, sans-serif;
+                -webkit-box-sizing: border-box;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+            
+            body {
+                background-color: #D5D5D5;
+            }
+            
+            #content {
+                width: 1350px;
+                margin: auto;
+            }
+            
+            #tasksBox {
+                background-color: #F5F5F5;
+                width: 500px;
+                float: left;
+                border: 1px #C0C0C0 solid;
+                padding: 10px;
+                margin: 10px;
+            }
+            
+                #todoListDone {
+                    color: #C0C0C0;
+                }
+                
+                .deleteTask {
+                    width: 16px;
+                    height: 16px;
+                    float: left;
+                    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJdSURBVDjLpZP7S1NhGMf9W7YfogSJboSEUVCY8zJ31trcps6zTI9bLGJpjp1hmkGNxVz4Q6ildtXKXzJNbJRaRmrXoeWx8tJOTWptnrNryre5YCYuI3rh+8vL+/m8PA/PkwIg5X+y5mJWrxfOUBXm91QZM6UluUmthntHqplxUml2lciF6wrmdHriI0Wx3xw2hAediLwZRWRkCPzdDswaSvGqkGCfq8VEUsEyPF1O8Qu3O7A09RbRvjuIttsRbT6HHzebsDjcB4/JgFFlNv9MnkmsEszodIIY7Oaut2OJcSF68Qx8dgv8tmqEL1gQaaARtp5A+N4NzB0lMXxon/uxbI8gIYjB9HytGYuusfiPIQcN71kjgnW6VeFOkgh3XcHLvAwMSDPohOADdYQJdF1FtLMZPmslvhZJk2ahkgRvq4HHUoWHRDqTEDDl2mDkfheiDgt8pw340/EocuClCuFvboQzb0cwIZgki4KhzlaE6w0InipbVzBfqoK/qRH94i0rgokSFeO11iBkp8EdV8cfJo0yD75aE2ZNRvSJ0lZKcBXLaUYmQrCzDT6tDN5SyRqYlWeDLZAg0H4JQ+Jt6M3atNLE10VSwQsN4Z6r0CBwqzXesHmV+BeoyAUri8EyMfi2FowXS5dhd7doo2DVII0V5BAjigP89GEVAtda8b2ehodU4rNaAW+dGfzlFkyo89GTlcrHYCLpKD+V7yeeHNzLjkp24Uu1Ed6G8/F8qjqGRzlbl2H2dzjpMg1KdwsHxOlmJ7GTeZC/nesXbeZ6c9OYnuxUc3fmBuFft/Ff8xMd0s65SXIb/gAAAABJRU5ErkJggg==);
+                    cursor: pointer;
+                }
+            
+            #notepadBox {
+                background-color: #F5F5F5;
+                width: 700px;
+                float: left;
+                border: 1px #C0C0C0 solid;
+                padding: 10px;
+                margin: 10px;
+            }
+            
+                #notepadBox textarea {
+                    width: 675px;
+                    height: 300px;
+                }
+                
+                #notepadMessages .success {
+                    font-size: 12px;
+                    color: #468847;
+                    background-color: #dff0d8;
+                    border-color: #d6e9c6;
+                    padding: 5px;
+                    margin-bottom: 5px;
+                }
+            
+        </style>
+        
+        <script>
+            
+            if (Modernizr.localstorage) {
+                
+                Storage.prototype.setArray = function(key, obj) {
+                    return this.setItem(key, JSON.stringify(obj))
+                }
+                Storage.prototype.getArray = function(key) {
+                    return JSON.parse(this.getItem(key))
+                }
+                
+                function addItemToListTodo(id, title) {
+                    return '<div id="task' + id + '"><input type="checkbox" class="checker" id="' + id + '"/> <label for="' + id + '">' + title + '</label></div>';
+                }
+                function addItemToListFinished(id, title) {
+                    return '<div id="checkTask' + id + '"><div class="deleteTask" id="' + id + '"></div><input type="checkbox" checked="checked" class="unchecker" id="' + id + '"/> <label for="' + id + '">' + title + '</label></div>';
+                }
+                
+                $(document).ready(function () {
+                    
+                    /* ********* DATA LOADER *********** */
+                    
+                    // get current todos
+                    var allTasks = window.localStorage.getArray("tasks");
+                    if (allTasks) {
+                        $.each(allTasks, function(i, item) {
+                            if (item.checked) {
+                                $('#todoListDone').append( addItemToListFinished(item.id, item.title) );
+                            }
+                            else {
+                                $('#todoList').append( addItemToListTodo(item.id, item.title) );
+                            }
+                        });
+                    }
+                    else {
+                        allTasks = new Array();
+                    }
+                    
+                    
+                    // get notepad
+                    var notepadText = localStorage.getItem("notepad");
+                    if (notepadText) {
+                        $('#notepad').val(notepadText);
+                    }
+                    
+                    /* ****************************** */
+                    /* ****************************** */
+                    
+                    
+                    /* ********* TASK ACTIONS (check & uncheck & delete) ******* */
+                    
+                    $(document).on('click', '.checker', function(){ 
+                        var checkedId = $(this).attr('id');
+                        $.each(allTasks, function(i, item) {
+                            if (item.id == checkedId) {
+                                item.checked = true;
+                                
+                                $('#todoListDone').append( addItemToListFinished(item.id, item.title) );
+                                $('#todoList #task' + item.id).remove();
+                            }
+                        });
+                        
+                        window.localStorage.setArray("tasks", allTasks);
+                        // console.log(allTasks);
+                    });
+                    
+                    $(document).on('click', '.unchecker', function(){ 
+                        var uncheckedId = $(this).attr('id');
+                        $.each(allTasks, function(i, item) {
+                            if (item.id == uncheckedId) {
+                                item.checked = false;
+                                
+                                $('#todoList').append( addItemToListTodo(item.id, item.title) );
+                                $('#todoListDone #checkTask' + item.id).remove();
+                            }
+                        });
+                        
+                        window.localStorage.setArray("tasks", allTasks);
+                    });
+                    
+                    $(document).on('click', '.deleteTask', function(){ 
+                        deletedId = $(this).attr('id');
+                        console.log('deleting : ' + deletedId);
+                        console.log(allTasks);
+                        
+                        $.each(allTasks, function(i, item) {
+                            if (item.id == deletedId) {
+                                allTasks.splice(i, 1);
+                                $('#todoListDone #checkTask' + item.id).remove();
+                            }
+                        });
+                        window.localStorage.setArray("tasks", allTasks);
+                        
+                        console.log(allTasks);
+                    });
+                        
+                    /* ****************************** */
+                    /* ****************************** */
+                    
+                    /* ********* TASK ACTIONS (buttons) ******* */
+                    
+                    $('#clearAll').click(function() {
+                       localStorage.removeItem("tasks");
+                       $('#todoList').html('');
+                    });
+                    
+                    // add items by pressing enter
+                    $('#item').bind("enterKey",function(e){
+                       $('#add').click()
+                    });
+                    $('#item').keyup(function(e){
+                        if(e.keyCode == 13) {
+                            $(this).trigger("enterKey");
+                        }
+                    });
+                    
+                    $('#add').click(function() {
+                        if ($('#item').val() !== '') {
+                            var $task = $('#item').val();
+                            var $id = $.now();
+                            
+                            // var gatheredPosts = window.localStorage.getArray("tasks");
+                        
+                            // if (!allTasks) {
+                                // allTasks = new Array();
+                            // }
+                            
+                            allTasks.push({ id: $id, title: $task, checked: false });
+                            window.localStorage.setArray("tasks", allTasks);
+                            
+                            $('#todoList').append( addItemToListTodo($id, $task) );
+                            $('#item').val('');
+                            $('#item').focus();
+                            
+                        }
+                    });
+                    
+                    /* ****************************** */
+                    /* ****************************** */
+                    
+                    
+                    $('#notepad').blur(function() {
+                        localStorage.setItem("notepad", $(this).val());
+                        $('#notepadMessages').append('<div class="success">Your text has been successfully saved!</div>');
+                        $("#notepadMessages .success").delay(2000).hide(400, function() { $(this).remove(); } );
+                    });
+                });
+                
+            } else {
+                // console.log('Ooops... no local storage!');
+                $(document).ready(function () {
+                    $('#todoList').append('<h1>Sorry, your browser doesn\'t support localStorage. Please upgrade!</h1>');
+                    $('#item').attr('disabled', true);
+                    $('#add').attr('disabled', true);
+                    $('#clear').attr('disabled', true);
+                });
+            }
+            
+            
+            
+        </script>
+    </head>
+    
+    <body>
+        
+        <div id="content">
+            <div id="tasksBox">
+                <div id="todoList"></div>
+                <br />
+                <input type="text" id="item" placeholder="add your item..." />
+                <input type="button" id="add" value="Add Item" />
+                <input type="button" id="clearAll" value="Clear All" />
+                <br /><br />
+                <div id="todoListDone"></div>
+            </div>
+            
+            <div id="notepadBox">
+                <div id="notepadMessages"></div>
+                <textarea id="notepad" placeholder="Type something here... Your text will be automatically saved once you exit this textbox :)"></textarea>
+            </div>
+        </div>
+        
+    </body>
+</html>
