@@ -8,6 +8,12 @@ All the magic happens inside your browser, so all you will add here it's for you
 > I open-sourced the project because this way anyone can see that **NO** information is sent elsewhere than on your local machine (localStorage). So no, no one's spying on you! you're safe!
 
 
+###Demo
+
+http://cookies.0010media.com/startr/
+
+
+
 ###Install
 
 Just clone the project, add the startr.html file somewhere on your disk or on a server and you're ready to go. 
