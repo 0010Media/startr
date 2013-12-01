@@ -2,7 +2,48 @@
     <head>
         <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.0/modernizr.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        
+        <link href='http://fonts.googleapis.com/css?family=Sacramento' rel='stylesheet' type='text/css'>
+        <link href='//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.3/normalize.min.css' rel='stylesheet' type='text/css'>
+
+        <style>
+    
+        /*
+            This is the part when you can modify the colors for the tags / projects
+        */
+
+        .tag {
+                border: 1px #C0C0C0 solid;
+                font-size: 11px;
+                padding: 2px;
+                background-color: #3498db;
+                color: #FFF;
+                vertical-align: 1px;
+            }
+
+            /* [START] YOUR OWN SPECIAL TAGS */
+            .tag.idea {
+                background-color: #f1c40f;
+                color: #000;
+            }
+            .tag.bug {
+                background-color: #e74c3c;
+                color: #fff;
+            }
+            /* [END] YOUR OWN SPECIAL TAGS */
+
+
+        .project {
+            border: 1px #C0C0C0 solid;
+            font-size: 11px;
+            padding: 2px;
+            background-color: #27ae60;
+            color: #FFF;
+            vertical-align: 1px;
+        }
+
+
+        </style>
+
         <style>
             * {
                 font-family: Calibri, Ubuntu, Verdana, sans-serif;
@@ -10,6 +51,23 @@
                 -moz-box-sizing: border-box;
                 box-sizing: border-box;
             }
+
+            #startrLogo {
+                font-family: 'Sacramento', cursive;
+                font-size: 84px;
+                height: 90px;
+            }
+            
+            #startrDesc {
+                float: right;
+                font-size: 11px;
+                color: #B5B5B5;
+            }
+                #startrDesc a {
+                    color: #B5B5B5;
+                    text-decoration: none;
+                    font-weight: bold;
+                }
             
             body {
                 background-color: #D5D5D5;
@@ -45,24 +103,6 @@
                     vertical-align: 3px;
                 }
                 
-            .tag {
-                border: 1px #C0C0C0 solid;
-                font-size: 11px;
-                padding: 2px;
-                background-color: #3498db;
-                color: #FFF;
-                vertical-align: 1px;
-            }
-
-            .project {
-                border: 1px #C0C0C0 solid;
-                font-size: 11px;
-                padding: 2px;
-                background-color: #27ae60;
-                color: #FFF;
-                vertical-align: 1px;
-            }
-            
             #notepadBox {
                 background-color: #F5F5F5;
                 width: 700px;
@@ -134,7 +174,7 @@
 
 
                     title = title.replace(/@(\S*)/g,''); // let's delete the projects (will be added at the start of the task name)
-                    title = title.replace(/#(\S*)/g,'<span class="tag">$1</span>'); // replace the tags
+                    title = title.replace(/#(\S*)/g,'<span class="tag $1">$1</span>'); // replace the tags
                     
                     // ok, now we'll add the projects
                     if (projects !== '') {
@@ -293,6 +333,12 @@
     <body>
         
         <div id="content">
+            <div id="startrDesc">
+                <a href="https://github.com/cristic84/startr" target="_blank">Startr</a> - An open-source simple personal homepage
+            </div>
+            <div id="startrLogo">Startr</div>
+
+
             <div id="tasksBox">
                 <div id="todoList"></div>
                 <br />
@@ -308,6 +354,5 @@
                 <textarea id="notepad" placeholder="Type something here... Your text will be automatically saved once you exit this textbox :)"></textarea>
             </div>
         </div>
-        
     </body>
 </html>
