@@ -15,6 +15,10 @@
                 background-color: #D5D5D5;
             }
             
+            #item {
+                width: 320px;
+            }
+
             #content {
                 width: 1350px;
                 margin: auto;
@@ -29,17 +33,35 @@
                 margin: 10px;
             }
             
+                #todoList label {
+                    font-size: 12px;
+                    vertical-align: 3px;
+                }
                 #todoListDone {
                     color: #C0C0C0;
                 }
-                
-                .deleteTask {
-                    width: 16px;
-                    height: 16px;
-                    float: left;
-                    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJdSURBVDjLpZP7S1NhGMf9W7YfogSJboSEUVCY8zJ31trcps6zTI9bLGJpjp1hmkGNxVz4Q6ildtXKXzJNbJRaRmrXoeWx8tJOTWptnrNryre5YCYuI3rh+8vL+/m8PA/PkwIg5X+y5mJWrxfOUBXm91QZM6UluUmthntHqplxUml2lciF6wrmdHriI0Wx3xw2hAediLwZRWRkCPzdDswaSvGqkGCfq8VEUsEyPF1O8Qu3O7A09RbRvjuIttsRbT6HHzebsDjcB4/JgFFlNv9MnkmsEszodIIY7Oaut2OJcSF68Qx8dgv8tmqEL1gQaaARtp5A+N4NzB0lMXxon/uxbI8gIYjB9HytGYuusfiPIQcN71kjgnW6VeFOkgh3XcHLvAwMSDPohOADdYQJdF1FtLMZPmslvhZJk2ahkgRvq4HHUoWHRDqTEDDl2mDkfheiDgt8pw340/EocuClCuFvboQzb0cwIZgki4KhzlaE6w0InipbVzBfqoK/qRH94i0rgokSFeO11iBkp8EdV8cfJo0yD75aE2ZNRvSJ0lZKcBXLaUYmQrCzDT6tDN5SyRqYlWeDLZAg0H4JQ+Jt6M3atNLE10VSwQsN4Z6r0CBwqzXesHmV+BeoyAUri8EyMfi2FowXS5dhd7doo2DVII0V5BAjigP89GEVAtda8b2ehodU4rNaAW+dGfzlFkyo89GTlcrHYCLpKD+V7yeeHNzLjkp24Uu1Ed6G8/F8qjqGRzlbl2H2dzjpMg1KdwsHxOlmJ7GTeZC/nesXbeZ6c9OYnuxUc3fmBuFft/Ff8xMd0s65SXIb/gAAAABJRU5ErkJggg==);
-                    cursor: pointer;
+                #todoListDone label {
+                    font-size: 12px;
+                    vertical-align: 3px;
                 }
+                
+            .tag {
+                border: 1px #C0C0C0 solid;
+                font-size: 11px;
+                padding: 2px;
+                background-color: #3498db;
+                color: #FFF;
+                vertical-align: 1px;
+            }
+
+            .project {
+                border: 1px #C0C0C0 solid;
+                font-size: 11px;
+                padding: 2px;
+                background-color: #27ae60;
+                color: #FFF;
+                vertical-align: 1px;
+            }
             
             #notepadBox {
                 background-color: #F5F5F5;
@@ -63,6 +85,16 @@
                     padding: 5px;
                     margin-bottom: 5px;
                 }
+
+            /* images */
+            .btnDelete {
+                width: 16px;
+                height: 16px;
+                float: left;
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJdSURBVDjLpZP7S1NhGMf9W7YfogSJboSEUVCY8zJ31trcps6zTI9bLGJpjp1hmkGNxVz4Q6ildtXKXzJNbJRaRmrXoeWx8tJOTWptnrNryre5YCYuI3rh+8vL+/m8PA/PkwIg5X+y5mJWrxfOUBXm91QZM6UluUmthntHqplxUml2lciF6wrmdHriI0Wx3xw2hAediLwZRWRkCPzdDswaSvGqkGCfq8VEUsEyPF1O8Qu3O7A09RbRvjuIttsRbT6HHzebsDjcB4/JgFFlNv9MnkmsEszodIIY7Oaut2OJcSF68Qx8dgv8tmqEL1gQaaARtp5A+N4NzB0lMXxon/uxbI8gIYjB9HytGYuusfiPIQcN71kjgnW6VeFOkgh3XcHLvAwMSDPohOADdYQJdF1FtLMZPmslvhZJk2ahkgRvq4HHUoWHRDqTEDDl2mDkfheiDgt8pw340/EocuClCuFvboQzb0cwIZgki4KhzlaE6w0InipbVzBfqoK/qRH94i0rgokSFeO11iBkp8EdV8cfJo0yD75aE2ZNRvSJ0lZKcBXLaUYmQrCzDT6tDN5SyRqYlWeDLZAg0H4JQ+Jt6M3atNLE10VSwQsN4Z6r0CBwqzXesHmV+BeoyAUri8EyMfi2FowXS5dhd7doo2DVII0V5BAjigP89GEVAtda8b2ehodU4rNaAW+dGfzlFkyo89GTlcrHYCLpKD+V7yeeHNzLjkp24Uu1Ed6G8/F8qjqGRzlbl2H2dzjpMg1KdwsHxOlmJ7GTeZC/nesXbeZ6c9OYnuxUc3fmBuFft/Ff8xMd0s65SXIb/gAAAABJRU5ErkJggg==);
+                cursor: pointer;
+            }
+
             
         </style>
         
@@ -76,12 +108,46 @@
                 Storage.prototype.getArray = function(key) {
                     return JSON.parse(this.getItem(key))
                 }
+
+                function taskNameToUppercase(taskName) {
+                    var allTheWords = taskName.split(/\s+/);
+                    $.each(allTheWords, function(i, value) {
+                        if (value.charAt(0) !== '#' && value.charAt(0) !== '@') { // check if the word is not a tag
+                            allTheWords[i] = value.charAt(0).toUpperCase() + value.slice(1); 
+                            return false;
+                        }
+                    });
+                    return allTheWords.join(' ');
+                }
                 
                 function addItemToListTodo(id, title) {
+                    var projects = '';
+                    if (title.match(/@(\S*)/g)) {
+                        $.each(title.match(/@(\S*)/g), function (i, v) {
+                            projects += '<span class="project">' + v + '</span>';
+                        });
+                    }
+
+                    
+                    // always make the task text's first letter uppercase!
+                    title = taskNameToUppercase(title);
+
+
+                    title = title.replace(/@(\S*)/g,''); // let's delete the projects (will be added at the start of the task name)
+                    title = title.replace(/#(\S*)/g,'<span class="tag">$1</span>'); // replace the tags
+                    
+                    // ok, now we'll add the projects
+                    if (projects !== '') {
+                        title = projects + ' ' + title;
+                    }
+
                     return '<div id="task' + id + '"><input type="checkbox" class="checker" id="' + id + '"/> <label for="' + id + '">' + title + '</label></div>';
                 }
                 function addItemToListFinished(id, title) {
-                    return '<div id="checkTask' + id + '"><div class="deleteTask" id="' + id + '"></div><input type="checkbox" checked="checked" class="unchecker" id="' + id + '"/> <label for="' + id + '">' + title + '</label></div>';
+                    // always make the task text's first letter uppercase!
+                    title = taskNameToUppercase(title);
+
+                    return '<div id="checkTask' + id + '"><div class="btnDelete deleteTask" id="' + id + '"></div><input type="checkbox" checked="checked" class="unchecker" id="' + id + '"/> <label>' + title + '</label></div>';
                 }
                 
                 $(document).ready(function () {
@@ -103,8 +169,8 @@
                     else {
                         allTasks = new Array();
                     }
-                    
-                    
+
+
                     // get notepad
                     var notepadText = localStorage.getItem("notepad");
                     if (notepadText) {
@@ -129,7 +195,6 @@
                         });
                         
                         window.localStorage.setArray("tasks", allTasks);
-                        // console.log(allTasks);
                     });
                     
                     $(document).on('click', '.unchecker', function(){ 
@@ -152,7 +217,8 @@
                         console.log(allTasks);
                         
                         $.each(allTasks, function(i, item) {
-                            if (item.id == deletedId) {
+                            console.log(item);
+                            if (item && item.id == deletedId) {
                                 allTasks.splice(i, 1);
                                 $('#todoListDone #checkTask' + item.id).remove();
                             }
@@ -170,6 +236,7 @@
                     $('#clearAll').click(function() {
                        localStorage.removeItem("tasks");
                        $('#todoList').html('');
+                       $('#todoListDone').html('');
                     });
                     
                     // add items by pressing enter
@@ -186,12 +253,6 @@
                         if ($('#item').val() !== '') {
                             var $task = $('#item').val();
                             var $id = $.now();
-                            
-                            // var gatheredPosts = window.localStorage.getArray("tasks");
-                        
-                            // if (!allTasks) {
-                                // allTasks = new Array();
-                            // }
                             
                             allTasks.push({ id: $id, title: $task, checked: false });
                             window.localStorage.setArray("tasks", allTasks);
@@ -235,7 +296,7 @@
             <div id="tasksBox">
                 <div id="todoList"></div>
                 <br />
-                <input type="text" id="item" placeholder="add your item..." />
+                <input type="text" id="item" placeholder="add your item... you can use @projects and #tags" />
                 <input type="button" id="add" value="Add Item" />
                 <input type="button" id="clearAll" value="Clear All" />
                 <br /><br />
