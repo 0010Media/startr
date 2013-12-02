@@ -18,6 +18,7 @@
                 background-color: #3498db;
                 color: #FFF;
                 vertical-align: 1px;
+                cursor: pointer;
             }
 
             /* [START] YOUR OWN SPECIAL TAGS */
@@ -82,6 +83,16 @@
                 margin: auto;
             }
             
+            #tasksBoxFilter {
+                font-size: 12px;
+                text-align: right;
+                color: #A0A0A0;
+                margin-bottom: 5px;
+            }
+                #clearFilter {
+                    cursor: pointer;
+                }
+            
             #tasksBox {
                 background-color: #F5F5F5;
                 width: 500px;
@@ -90,6 +101,11 @@
                 padding: 10px;
                 margin: 10px;
             }
+            
+                .taskRow {
+                    margin-bottom: 5px;
+                    line-height: 18px;
+                }
             
                 #todoList label {
                     font-size: 12px;
@@ -115,6 +131,10 @@
                 #notepadBox textarea {
                     width: 675px;
                     height: 300px;
+                    font-size: 12px; 
+                    color: #505050; 
+                    border: 1px #C0C0C0 solid; 
+                    padding: 5px;
                 }
                 
                 #notepadMessages .success {
@@ -167,6 +187,14 @@
                             projects += '<span class="project">' + v + '</span>';
                         });
                     }
+                    
+                    var tagsClass = '';
+                    if (title.match(/#(\S*)/g)) {
+                        $.each(title.match(/#(\S*)/g), function (i, v) {
+                            tagsClass += ' ' + v.substring(1);
+                        });
+                    }
+
 
                     
                     // always make the task text's first letter uppercase!
@@ -181,13 +209,13 @@
                         title = projects + ' ' + title;
                     }
 
-                    return '<div id="task' + id + '"><input type="checkbox" class="checker" id="' + id + '"/> <label for="' + id + '">' + title + '</label></div>';
+                    return '<div class="taskRow' + tagsClass + '" id="task' + id + '"><input type="checkbox" class="checker" id="' + id + '"/> <label for="' + id + '">' + title + '</label></div>';
                 }
                 function addItemToListFinished(id, title) {
                     // always make the task text's first letter uppercase!
                     title = taskNameToUppercase(title);
 
-                    return '<div id="checkTask' + id + '"><div class="btnDelete deleteTask" id="' + id + '"></div><input type="checkbox" checked="checked" class="unchecker" id="' + id + '"/> <label>' + title + '</label></div>';
+                    return '<div id="checkTask' + id + '"><div class="btnDelete deleteTask" id="' + id + '"></div>&nbsp;<input type="checkbox" checked="checked" class="unchecker" id="' + id + '"/> <label>' + title + '</label></div>';
                 }
                 
                 $(document).ready(function () {
@@ -219,6 +247,24 @@
                     
                     /* ****************************** */
                     /* ****************************** */
+                    
+                    /* ********* TAG FILTER ******** */
+                    
+                    $(document).on('click', '#clearFilter', function(){ 
+                        $('.taskRow').show();
+                        $('#tasksBoxFilter').text('');
+                    });
+                    
+                    $('.tag').click(function (e){
+                        var selectedTag = $(this).text();
+                       $('#tasksBoxFilter').html('Selected tag : #' + selectedTag + ' [<span id="clearFilter">clear</span>]');
+                       $('.taskRow').not('.' + selectedTag).hide();
+                       e.preventDefault();
+                    });
+                    
+                    /* ****************************** */
+                    /* ****************************** */
+                    
                     
                     
                     /* ********* TASK ACTIONS (check & uncheck & delete) ******* */
@@ -338,8 +384,9 @@
             </div>
             <div id="startrLogo">Startr</div>
 
-
             <div id="tasksBox">
+                <div id="tasksBoxFilter"></div>
+                
                 <div id="todoList"></div>
                 <br />
                 <input type="text" id="item" placeholder="add your item... you can use @projects and #tags" />
