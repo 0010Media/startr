@@ -170,6 +170,20 @@
                 cursor: pointer;
             }
             
+            .btnEdit {
+                width: 16px;
+                height: 16px;
+                float: left;
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAH8SURBVDjLjZPfS1NhGMdXf0VEQhDUhdCN4X0IYT8ghIJQM0KoC4vushZddLELKyRhQQkSFIKEGEkUCI2oxVhepG5zi1xbc0u3cDs7Z+ec/ezT+x62scmmHvhwDrzP93Pe57znsQE2cR0SdAm6d+GwYL/M1LBVBV35fF4plUqVcrlMK8Q6TqdzYrukJuiW4Vwuh67rdbLZLJlMhmQyaUnigVlC05f4+dbB0tQplp92DsnwPimQBaZpUigUrLtE0zQURSGVSqHF37DhGkVZeQdagszKLJ7HvZtNAhmuIQWGYaCqKps/ZkivPqCwPs/Gp0cYvjnKUTe+F9fMJoFoo96zfJZ9K+sLpP33qRhujPANtr7dJPhqmO/PBxX3+PljTYLtqImPpH13qZge9LUrmLEB1FU7sZd9jJw5MljNthYk/KLnxdFqeAjzdz9Z/z3Ck2fRE36qx9pakAjME1y4Lbb9GTMyTD52GUXsZO3ZadTkL6umrSD4ZZrAezvLH54Q915EjwywtXSH8FQf+t+I9V12FLwe6wE1SmjyAi77Qb6Kt3rGe9H+hKzwrgLH9eMUPE4K3gm8jpPMjRwlHfNTLBbr7Cjo7znA2NVOXA/PsThzi2wyah1pI+0E/9rNQQsqMtM4CyfE36fLhb2ERa0mB7BR0CElexjnGnL0O2T2PyFunSz8jchwAAAAAElFTkSuQmCC);
+                cursor: pointer;
+            }
+
+            /* image edit task */
+            .editTask {
+                margin-top: 1px;
+            }
+
+
         </style>
         
         <script>
@@ -224,6 +238,8 @@
                     }
 
                     return '<div class="taskRow' + tagsClass + '" id="task' + id + '">' + 
+                            '<div class="btnEdit editTask" data-id="' + id + '"></div>' + 
+                            '&nbsp;' + 
                             '<input type="checkbox" class="checker" id="' + id + '"/> ' + 
                             '<label for="' + id + '">' + title + '</label></div>';
                 }
@@ -317,6 +333,10 @@
                         window.localStorage.setArray("tasks", allTasks);
                     });
                     
+                    $(document).on('click', '.editTask', function(){ 
+                        console.log($(this).data('id'));
+                    });
+
                     $(document).on('click', '.deleteTask', function(){ 
                         // 
                         // Delete confirmation was removed because it's not so funny to be asked each time 'are you sure???'
