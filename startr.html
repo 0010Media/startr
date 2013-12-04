@@ -78,8 +78,20 @@
                 width: 320px;
                 font-size: 12px;
                 height: 25px;
-                vertical-align: 2px;
             }
+                input[type="button"] {
+                    height: 25px;
+                    font-size: 12px;
+                    background-color: #D0D0D0;
+                    border: 1px #C0C0C0 solid;
+                    box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
+                    -webkit-border-radius: 3px; 
+                    border-radius: 3px; 
+                    background-clip: padding-box;
+                }
+                #clearAll {
+                    background-color: #FFCCCC;
+                }
 
             #content {
                 width: 1250px;
@@ -121,7 +133,7 @@
                     font-size: 12px;
                     vertical-align: 3px;
                 }
-                
+
             #notepadBox {
                 background-color: #F5F5F5;
                 width: 700px;
@@ -157,7 +169,6 @@
                 background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJdSURBVDjLpZP7S1NhGMf9W7YfogSJboSEUVCY8zJ31trcps6zTI9bLGJpjp1hmkGNxVz4Q6ildtXKXzJNbJRaRmrXoeWx8tJOTWptnrNryre5YCYuI3rh+8vL+/m8PA/PkwIg5X+y5mJWrxfOUBXm91QZM6UluUmthntHqplxUml2lciF6wrmdHriI0Wx3xw2hAediLwZRWRkCPzdDswaSvGqkGCfq8VEUsEyPF1O8Qu3O7A09RbRvjuIttsRbT6HHzebsDjcB4/JgFFlNv9MnkmsEszodIIY7Oaut2OJcSF68Qx8dgv8tmqEL1gQaaARtp5A+N4NzB0lMXxon/uxbI8gIYjB9HytGYuusfiPIQcN71kjgnW6VeFOkgh3XcHLvAwMSDPohOADdYQJdF1FtLMZPmslvhZJk2ahkgRvq4HHUoWHRDqTEDDl2mDkfheiDgt8pw340/EocuClCuFvboQzb0cwIZgki4KhzlaE6w0InipbVzBfqoK/qRH94i0rgokSFeO11iBkp8EdV8cfJo0yD75aE2ZNRvSJ0lZKcBXLaUYmQrCzDT6tDN5SyRqYlWeDLZAg0H4JQ+Jt6M3atNLE10VSwQsN4Z6r0CBwqzXesHmV+BeoyAUri8EyMfi2FowXS5dhd7doo2DVII0V5BAjigP89GEVAtda8b2ehodU4rNaAW+dGfzlFkyo89GTlcrHYCLpKD+V7yeeHNzLjkp24Uu1Ed6G8/F8qjqGRzlbl2H2dzjpMg1KdwsHxOlmJ7GTeZC/nesXbeZ6c9OYnuxUc3fmBuFft/Ff8xMd0s65SXIb/gAAAABJRU5ErkJggg==);
                 cursor: pointer;
             }
-
             
         </style>
         
@@ -212,13 +223,19 @@
                         title = projects + ' ' + title;
                     }
 
-                    return '<div class="taskRow' + tagsClass + '" id="task' + id + '"><input type="checkbox" class="checker" id="' + id + '"/> <label for="' + id + '">' + title + '</label></div>';
+                    return '<div class="taskRow' + tagsClass + '" id="task' + id + '">' + 
+                            '<input type="checkbox" class="checker" id="' + id + '"/> ' + 
+                            '<label for="' + id + '">' + title + '</label></div>';
                 }
                 function addItemToListFinished(id, title) {
                     // always make the task text's first letter uppercase!
                     title = taskNameToUppercase(title);
 
-                    return '<div id="checkTask' + id + '"><div class="btnDelete deleteTask" id="' + id + '"></div>&nbsp;<input type="checkbox" checked="checked" class="unchecker" id="' + id + '"/> <label>' + title + '</label></div>';
+                    return '<div id="checkTask' + id + '">' + 
+                            '<div class="btnDelete deleteTask" data-id="' + id + '"></div>' + 
+                            '&nbsp;' + 
+                            '<input type="checkbox" checked="checked" class="unchecker" id="' + id + '"/> ' + 
+                            '<label for="' + id + '">' + title + '</label></div>';
                 }
                 
                 $(document).ready(function () {
@@ -258,11 +275,11 @@
                         $('#tasksBoxFilter').text('');
                     });
                     
-                    $('.tag').click(function (e){
+                    $(document).on('click', '.tag', function(e){ 
                         var selectedTag = $(this).text();
-                       $('#tasksBoxFilter').html('Selected tag : #' + selectedTag + ' [<span id="clearFilter">clear</span>]');
-                       $('.taskRow').not('.' + selectedTag).hide();
-                       e.preventDefault();
+                        $('#tasksBoxFilter').html('Selected tag : #' + selectedTag + ' [<span id="clearFilter">clear</span>]');
+                        $('.taskRow').not('.' + selectedTag).hide();
+                        e.preventDefault();
                     });
                     
                     /* ****************************** */
@@ -301,20 +318,21 @@
                     });
                     
                     $(document).on('click', '.deleteTask', function(){ 
-                        deletedId = $(this).attr('id');
-                        console.log('deleting : ' + deletedId);
-                        console.log(allTasks);
-                        
-                        $.each(allTasks, function(i, item) {
-                            console.log(item);
-                            if (item && item.id == deletedId) {
-                                allTasks.splice(i, 1);
-                                $('#todoListDone #checkTask' + item.id).remove();
-                            }
-                        });
-                        window.localStorage.setArray("tasks", allTasks);
-                        
-                        console.log(allTasks);
+                        // 
+                        // Delete confirmation was removed because it's not so funny to be asked each time 'are you sure???'
+                        // I'll see in the future if this was a bad idea or not :)
+                        //
+                        // var sure = confirm('Delete?');
+                        // if (sure) {
+                            deletedId = $(this).data('id');
+                            $.each(allTasks, function(i, item) {
+                                if (item && item.id == deletedId) {
+                                    allTasks.splice(i, 1);
+                                    $('#todoListDone #checkTask' + item.id).remove();
+                                }
+                            });
+                            window.localStorage.setArray("tasks", allTasks);
+                        // }
                     });
                         
                     /* ****************************** */
@@ -323,9 +341,12 @@
                     /* ********* TASK ACTIONS (buttons) ******* */
                     
                     $('#clearAll').click(function() {
-                       localStorage.removeItem("tasks");
-                       $('#todoList').html('');
-                       $('#todoListDone').html('');
+                        var sure = confirm('Are you sure you want to delete ALL the tasks?');
+                        if (sure) {
+                            localStorage.removeItem("tasks");
+                            $('#todoList').html('');
+                            $('#todoListDone').html('');
+                        }
                     });
                     
                     // add items by pressing enter
