@@ -1,0 +1,150 @@
+/*
+    This is the part where you can modify the colors for the tags / projects
+*/
+.tag {
+  border: 1px #C0C0C0 solid;
+  font-size: 11px;
+  padding: 2px;
+  background-color: #3498db;
+  color: #FFF;
+  vertical-align: 1px;
+  cursor: pointer; }
+
+/* [START] YOUR OWN SPECIAL TAGS */
+.tag.idea {
+  background-color: #f1c40f;
+  color: #000; }
+
+.tag.bug {
+  background-color: #e74c3c;
+  color: #fff; }
+
+/* [END] YOUR OWN SPECIAL TAGS */
+.project {
+  border: 1px #C0C0C0 solid;
+  font-size: 11px;
+  padding: 2px;
+  background-color: #27ae60;
+  color: #FFF;
+  vertical-align: 1px; }
+
+* {
+  font-family: Calibri, Ubuntu, Verdana, sans-serif;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+#startrLogo {
+  font-family: 'Sacramento', cursive;
+  font-size: 84px;
+  height: 90px; }
+
+#startrDesc {
+  float: right;
+  font-size: 11px;
+  color: #B5B5B5; }
+
+#startrDesc a {
+  color: #B5B5B5;
+  text-decoration: none;
+  font-weight: bold; }
+
+body {
+  background-color: #D5D5D5; }
+
+#item {
+  width: 320px;
+  font-size: 12px;
+  height: 25px; }
+
+input[type="button"] {
+  height: 25px;
+  font-size: 12px;
+  background-color: #D0D0D0;
+  border: 1px #C0C0C0 solid;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  background-clip: padding-box; }
+
+#clearAll {
+  background-color: #FFCCCC; }
+
+#content {
+  width: 1250px;
+  margin: auto; }
+
+#tasksBoxFilter {
+  font-size: 12px;
+  text-align: right;
+  color: #A0A0A0;
+  margin-bottom: 5px; }
+
+#clearFilter {
+  cursor: pointer; }
+
+#tasksBox {
+  background-color: #F5F5F5;
+  width: 500px;
+  float: left;
+  border: 1px #C0C0C0 solid;
+  padding: 10px;
+  margin: 10px; }
+
+.taskRow {
+  margin-bottom: 5px;
+  line-height: 18px; }
+
+#todoList label {
+  font-size: 12px;
+  vertical-align: 3px; }
+
+#todoListDone {
+  color: #C0C0C0; }
+
+#todoListDone label {
+  font-size: 12px;
+  vertical-align: 3px; }
+
+#notepadBox {
+  background-color: #F5F5F5;
+  width: 700px;
+  float: left;
+  border: 1px #C0C0C0 solid;
+  padding: 10px;
+  margin: 10px; }
+
+#notepadBox textarea {
+  width: 675px;
+  height: 300px;
+  font-size: 12px;
+  color: #505050;
+  border: 1px #C0C0C0 solid;
+  padding: 5px; }
+
+#notepadMessages .success {
+  font-size: 12px;
+  color: #468847;
+  background-color: #dff0d8;
+  border-color: #d6e9c6;
+  padding: 5px;
+  margin-bottom: 5px; }
+
+/* images */
+.btnDelete {
+  width: 16px;
+  height: 16px;
+  float: left;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJdSURBVDjLpZP7S1NhGMf9W7YfogSJboSEUVCY8zJ31trcps6zTI9bLGJpjp1hmkGNxVz4Q6ildtXKXzJNbJRaRmrXoeWx8tJOTWptnrNryre5YCYuI3rh+8vL+/m8PA/PkwIg5X+y5mJWrxfOUBXm91QZM6UluUmthntHqplxUml2lciF6wrmdHriI0Wx3xw2hAediLwZRWRkCPzdDswaSvGqkGCfq8VEUsEyPF1O8Qu3O7A09RbRvjuIttsRbT6HHzebsDjcB4/JgFFlNv9MnkmsEszodIIY7Oaut2OJcSF68Qx8dgv8tmqEL1gQaaARtp5A+N4NzB0lMXxon/uxbI8gIYjB9HytGYuusfiPIQcN71kjgnW6VeFOkgh3XcHLvAwMSDPohOADdYQJdF1FtLMZPmslvhZJk2ahkgRvq4HHUoWHRDqTEDDl2mDkfheiDgt8pw340/EocuClCuFvboQzb0cwIZgki4KhzlaE6w0InipbVzBfqoK/qRH94i0rgokSFeO11iBkp8EdV8cfJo0yD75aE2ZNRvSJ0lZKcBXLaUYmQrCzDT6tDN5SyRqYlWeDLZAg0H4JQ+Jt6M3atNLE10VSwQsN4Z6r0CBwqzXesHmV+BeoyAUri8EyMfi2FowXS5dhd7doo2DVII0V5BAjigP89GEVAtda8b2ehodU4rNaAW+dGfzlFkyo89GTlcrHYCLpKD+V7yeeHNzLjkp24Uu1Ed6G8/F8qjqGRzlbl2H2dzjpMg1KdwsHxOlmJ7GTeZC/nesXbeZ6c9OYnuxUc3fmBuFft/Ff8xMd0s65SXIb/gAAAABJRU5ErkJggg==);
+  cursor: pointer; }
+
+.btnEdit {
+  width: 16px;
+  height: 16px;
+  float: left;
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAH8SURBVDjLjZPfS1NhGMdXf0VEQhDUhdCN4X0IYT8ghIJQM0KoC4vushZddLELKyRhQQkSFIKEGEkUCI2oxVhepG5zi1xbc0u3cDs7Z+ec/ezT+x62scmmHvhwDrzP93Pe57znsQE2cR0SdAm6d+GwYL/M1LBVBV35fF4plUqVcrlMK8Q6TqdzYrukJuiW4Vwuh67rdbLZLJlMhmQyaUnigVlC05f4+dbB0tQplp92DsnwPimQBaZpUigUrLtE0zQURSGVSqHF37DhGkVZeQdagszKLJ7HvZtNAhmuIQWGYaCqKps/ZkivPqCwPs/Gp0cYvjnKUTe+F9fMJoFoo96zfJZ9K+sLpP33qRhujPANtr7dJPhqmO/PBxX3+PljTYLtqImPpH13qZge9LUrmLEB1FU7sZd9jJw5MljNthYk/KLnxdFqeAjzdz9Z/z3Ck2fRE36qx9pakAjME1y4Lbb9GTMyTD52GUXsZO3ZadTkL6umrSD4ZZrAezvLH54Q915EjwywtXSH8FQf+t+I9V12FLwe6wE1SmjyAi77Qb6Kt3rGe9H+hKzwrgLH9eMUPE4K3gm8jpPMjRwlHfNTLBbr7Cjo7znA2NVOXA/PsThzi2wyah1pI+0E/9rNQQsqMtM4CyfE36fLhb2ERa0mB7BR0CElexjnGnL0O2T2PyFunSz8jchwAAAAAElFTkSuQmCC);
+  cursor: pointer; }
+
+/* image edit task */
+.editTask {
+  margin-top: 1px; }
