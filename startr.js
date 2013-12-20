@@ -28,14 +28,20 @@ function addItemToListTodo(id, title) {
     }
     
     if (title.match(/@(\S*)/g)) {
+        
         $.each(title.match(/@(\S*)/g), function (i, v) {
-            projects += '<span class="project">' + v + '</span>' + '&nbsp;';
+            // we'll not add to the title of the task the last project (if there are multiple projects)
+            // because this one will be in the header of the section
+            if (i !== (title.match(/@(\S*)/g).length - 1)) { 
+                projects += '<span class="project">' + v + '</span>' + '&nbsp;';
+            }
         });
     }
 
+    // let's build the projects sections (headers)
     var projectName = extractProjectName(title);
     if (projectName !== '' && !$("#project_" + projectName)[0]) {
-        $('#todoList').append('<div id="project_' + projectName + '"><h3 class="startr_projectName">' + projectName + '</h3></div>');
+        $('#todoList').append('<div id="project_' + projectName + '"><h3 class="startr_projectName">' + projectName.charAt(0).toUpperCase() + projectName.slice(1) + '</h3></div>');
     }
     
     var tagsClass = '';
@@ -64,7 +70,7 @@ function addItemToListTodo(id, title) {
                     '<label for="' + id + '">' + title + '</label></div>';
 
     // Let's see where we'll add the task - in a project or in the ALL PROJECTS group
-    if (projects != '') {
+    if (projectName != '') {
         $("#project_" + projectName).append(taskToAdd);
     }
     else {
