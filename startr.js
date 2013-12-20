@@ -9,12 +9,33 @@ function taskNameToUppercase(taskName) {
     return allTheWords.join(' ');
 }
 
-function addItemToListTodo(id, title) {
-    var projects = '';
+function extractProjectName(title) {
+    var projectName = '';
     if (title.match(/@(\S*)/g)) {
         $.each(title.match(/@(\S*)/g), function (i, v) {
-            projects += '<span class="project">' + v + '</span>';
+            projectName = v.substring(1); // we'll always use the last project in the task's name (if multiple projects added)
         });
+    }
+
+    return projectName;
+}
+
+function addItemToListTodo(id, title) {
+    var projects = '';
+
+    if (!$("#prj_allTasks")[0]) {
+        $('#todoList').append('<div id="prj_allTasks"><h3 class="startr_projectName">Tasks</h3></div>');
+    }
+    
+    if (title.match(/@(\S*)/g)) {
+        $.each(title.match(/@(\S*)/g), function (i, v) {
+            projects += '<span class="project">' + v + '</span>' + '&nbsp;';
+        });
+    }
+
+    var projectName = extractProjectName(title);
+    if (projectName !== '' && !$("#project_" + projectName)[0]) {
+        $('#todoList').append('<div id="project_' + projectName + '"><h3 class="startr_projectName">' + projectName + '</h3></div>');
     }
     
     var tagsClass = '';
@@ -36,11 +57,20 @@ function addItemToListTodo(id, title) {
         title = projects + ' ' + title;
     }
 
-    return '<div class="taskRow' + tagsClass + '" id="task' + id + '">' + 
-            '<div class="btnEdit editTask" data-id="' + id + '"></div>' + 
-            '&nbsp;' + 
-            '<input type="checkbox" class="checker" id="' + id + '"/> ' + 
-            '<label for="' + id + '">' + title + '</label></div>';
+    var taskToAdd = '<div class="taskRow' + tagsClass + '" id="task' + id + '">' + 
+                    '<div class="btnEdit editTask" data-id="' + id + '"></div>' + 
+                    '&nbsp;' + 
+                    '<input type="checkbox" class="checker" id="' + id + '"/> ' + 
+                    '<label for="' + id + '">' + title + '</label></div>';
+
+    // Let's see where we'll add the task - in a project or in the ALL PROJECTS group
+    if (projects != '') {
+        $("#project_" + projectName).append(taskToAdd);
+    }
+    else {
+        $('#prj_allTasks').append(taskToAdd);
+    }
+
 }
 
 
@@ -78,7 +108,7 @@ if (Modernizr.localstorage) {
                                 $('#todoListDone').append( addItemToListFinished(item.id, item.title) );
                             }
                             else {
-                                $('#todoList').append( addItemToListTodo(item.id, item.title) );
+                                addItemToListTodo(item.id, item.title);
                             }
                         });
                     }
@@ -125,6 +155,12 @@ if (Modernizr.localstorage) {
                                 
                                 $('#todoListDone').append( addItemToListFinished(item.id, item.title) );
                                 $('#todoList #task' + item.id).remove();
+                                
+                                // check if there is a project and if it doesn't have any other tasks, let's delete it !!!
+                                var hasProject = extractProjectName(item.title);
+                                if (hasProject !== '' && !$("#project_" + hasProject + " div")[0]) {
+                                    $("#project_" + hasProject).remove();
+                                }
                             }
                         });
                         
@@ -137,7 +173,7 @@ if (Modernizr.localstorage) {
                             if (item.id == uncheckedId) {
                                 item.checked = false;
                                 
-                                $('#todoList').append( addItemToListTodo(item.id, item.title) );
+                                addItemToListTodo(item.id, item.title);
                                 $('#todoListDone #checkTask' + item.id).remove();
                             }
                         });
@@ -199,7 +235,7 @@ if (Modernizr.localstorage) {
                             allTasks.push({ id: $id, title: $task, checked: false });
                             window.localStorage.setArray("tasks", allTasks);
                             
-                            $('#todoList').append( addItemToListTodo($id, $task) );
+                            addItemToListTodo($id, $task);
                             $('#item').val('');
                             $('#item').focus();
                             
