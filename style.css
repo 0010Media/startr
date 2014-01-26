@@ -180,6 +180,9 @@ input[type="button"] {
   margin-top: 7px;
   text-align: right; }
 
+#taskExporterSaveFile {
+  cursor: pointer; }
+
 #settingsPanel ul, li {
   display: inline; }
 

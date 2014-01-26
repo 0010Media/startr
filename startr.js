@@ -323,6 +323,20 @@ if (Modernizr.localstorage) {
             $('#taskExporter').html(JSON.stringify(dataArray));
             $('#sExport').show(200);
         });
+
+        $('#taskExporterSaveFile').click(function(event) {
+            var d = new Date();
+            var dDay = d.getDate();
+            var dMonth = d.getMonth() + 1;
+            var dYear = d.getFullYear();
+
+            if (dMonth<10) {
+                dMonth = '0' + dMonth;
+            }
+
+            var fileContent = $('#taskExporter').html();
+            window.location = 'http://savefile.joshmcarthur.com/export_startr_' + dDay + '-' + dMonth + '-' + dYear + '.txt?content=' + encodeURIComponent(fileContent);
+        });
         
         
         $('#import').click(function() {

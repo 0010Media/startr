@@ -33,5 +33,12 @@ Just clone the project, add the startr.html file somewhere on your disk or on a 
 4. ... will add more
  
 
-#### Author(s):
+#### Author(s) :
 - Cristian CIOFU - www.iamchris.info
+
+
+#### Credits :
+- jQuery ==> http://jquery.com/
+- modernizr ==> http://modernizr.com/
+- normalize.css ==> http://necolas.github.io/normalize.css/
+- savefile ==> http://savefile.joshmcarthur.com/
