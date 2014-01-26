@@ -21,9 +21,9 @@ Just clone the project, add the startr.html file somewhere on your disk or on a 
 
 ###Features
 
-1. **Todo List** _(in development)_
-2. **Notepad** _(in development)_
-3. **Import / Export** _(todo)_
+1. **Todo List** 
+2. **Notepad** 
+3. **Import / Export** 
 
 #### Other ideas
 
