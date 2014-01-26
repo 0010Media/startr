@@ -18,6 +18,8 @@ http://cookies.0010media.com/startr/
 
 Just clone the project, add the startr.html file somewhere on your disk or on a server and you're ready to go. 
 
+Set it as your start page and enjoy it :)
+
 
 ###Features
 
