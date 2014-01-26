@@ -15,7 +15,37 @@
         <div id="content">
             <div id="startrDesc">
                 <a href="https://github.com/cristianciofu/startr" target="_blank">Startr</a> - An open-source simple personal homepage
+
+                <div class="clear"></div>
+
+                <div id="settings">
+                    <i class="btnSettings"></i>
+                    <span id="settingsPanelShow" class="textImgInline">Settings</span>
+
+                    <div id="settingsPanel" style="display:none">
+                        <ul>
+                            <li><span class="settingsItem" id="export">Export Tasks</span></li>
+                            <li><span class="settingsItem" id="import">Import Tasks</span></li>
+
+                            <li><span class="settingsItem" id="settingsPanelHide">- hide -</span></li>
+                        </ul>
+                        
+                        <br /><br />
+                    </div>
+                        
+                    <div id="sExport" class="settingsBox">
+                        <textarea id="taskExporter" rows="2" onfocus="this.select()" onMouseUp="return false"></textarea>
+                    </div>
+                        
+                    <div id="sImport" class="settingsBox">
+                        <textarea id="taskImporter" rows="2" style="color: red"></textarea>
+                        <br />
+                        <input type="checkbox" id="importRemoveAllExisting" /><label for="importRemoveAllExisting">Remove existing tasks</label>
+                        <input type="button" id="importTasks" value="Import..." />
+                    </div>
+                </div>
             </div>
+
             <div id="startrLogo">Startr</div>
 
             <div id="tasksBox">
@@ -35,5 +65,6 @@
                 <textarea id="notepad" placeholder="Type something here... Your text will be automatically saved once you exit this textbox :)"></textarea>
             </div>
         </div>
+        
     </body>
 </html>

@@ -218,6 +218,7 @@ if (Modernizr.localstorage) {
                         var sure = confirm('Are you sure you want to delete ALL the tasks?');
                         if (sure) {
                             localStorage.removeItem("tasks");
+                            allTasks = new Array();
                             $('#todoList').html('');
                             $('#todoListDone').html('');
                         }
@@ -257,6 +258,106 @@ if (Modernizr.localstorage) {
                         $('#notepadMessages').append('<div class="success">Your text has been successfully saved!</div>');
                         $("#notepadMessages .success").delay(2000).hide(400, function() { $(this).remove(); } );
                     });
+
+                    
+
+                    /*
+                        SETTINGS
+                    */
+                    $('#settingsPanelShow').click(function() {
+                        $('#settingsPanel').show(200);
+                    });
+                    $('#settingsPanelHide').click(function() {
+                        $('.settingsBox').hide(100);
+                        $('#settingsPanel').hide(200);
+                        $('.settingsItem').removeClass('activeSetting');
+                    });
+
+                    $('#export').click(function() {
+                        var allTasksExporter = window.localStorage.getArray("tasks");
+                        var itemData = '';
+                        var dataArray = Array();
+
+                        $('.settingsItem').removeClass('activeSetting');
+                        $(this).addClass('activeSetting');
+                        
+                        $.each(allTasksExporter, function(index, item) {
+                             itemData = ( (item.checked) ? '1' : '0' ) + item.title;
+                             dataArray.push(itemData);
+                        });
+                        
+                        $('.settingsBox').hide(100);
+                        $('#taskExporter').html(JSON.stringify(dataArray));
+                        $('#sExport').show(200);
+                    });
+                    
+                    
+                    $('#import').click(function() {
+                        $('.settingsItem').removeClass('activeSetting');
+                        $(this).addClass('activeSetting');
+
+                        $('.settingsBox').hide(100);
+                        $('#sImport').show(200);
+                    });
+
+                    $('#importTasks').click(function() {
+
+                        var willRemoveExistingTasks = $('#importRemoveAllExisting').prop("checked");
+
+                        var toImport = $('#taskImporter').val();
+                        try {
+                            toImportData = JSON.parse(toImport);
+                        } catch (e) {
+                            alert("Something's wrong with the import data. Please try again!")
+                        }
+
+
+                        if (toImportData.length > 0) {
+                            var canAddTasks = true;
+                            if (willRemoveExistingTasks) {
+                                var confirmMessage = 'Are you sure you want to import and remove all the current tasks?';
+                                var sure = confirm(confirmMessage);
+                                canAddTasks = false;
+                                if (sure) {
+                                    localStorage.removeItem("tasks");
+                                    allTasks = new Array();
+                                    $('#todoList').html('');
+                                    $('#todoListDone').html('');
+                                    
+                                    canAddTasks = true;
+                                }
+                            }
+
+                            if (canAddTasks) {
+                                $.each(toImportData, function(index, item) {
+                                    var id = $.now();
+
+                                    var itemDone = false;
+                                    if (item.charAt(0) == 1) {
+                                        itemDone = true;
+                                    }
+                                    var itemTitle = item.slice(1);
+
+                                    console.log(allTasks);
+                                    allTasks.push({ id: id, title: itemTitle, checked: itemDone });
+                                    window.localStorage.setArray("tasks", allTasks);
+                                    
+                                    if (itemDone) {
+                                        $('#todoListDone').append( addItemToListFinished(id, itemTitle) );
+                                    }
+                                    else {
+                                        addItemToListTodo(id, itemTitle);
+                                    }
+                                });
+                                alert('The tasks were successfully imported')
+                            }
+                        }
+                        else {
+                            alert("Something's wrong with the import data. Please try again!")
+                        }
+                    });
+
+
                 });
                 
             } else {
