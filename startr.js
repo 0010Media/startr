@@ -92,280 +92,273 @@ function addItemToListFinished(id, title) {
 }
 
 
-
 if (Modernizr.localstorage) {
                 
-                Storage.prototype.setArray = function(key, obj) {
-                    return this.setItem(key, JSON.stringify(obj))
-                }
-                Storage.prototype.getArray = function(key) {
-                    return JSON.parse(this.getItem(key))
-                }
+    Storage.prototype.setArray = function(key, obj) {
+        return this.setItem(key, JSON.stringify(obj))
+    }
+    Storage.prototype.getArray = function(key) {
+        return JSON.parse(this.getItem(key))
+    }
 
-                $(document).ready(function () {
+    $(document).ready(function () {
+        
+        /* ********* DATA LOADER *********** */
+        
+        // get current todos
+        var allTasks = window.localStorage.getArray("tasks");
+        if (allTasks) {
+            $.each(allTasks, function(i, item) {
+                if (item.checked) {
+                    $('#todoListDone').append( addItemToListFinished(item.id, item.title) );
+                }
+                else {
+                    addItemToListTodo(item.id, item.title);
+                }
+            });
+        }
+        else {
+            allTasks = new Array();
+        }
+
+        // get notepad
+        var notepadText = localStorage.getItem("notepad");
+        if (notepadText) {
+            $('#notepad').val(notepadText);
+        }
+        
+        /* ****************************** */
+        /* ****************************** */
+        
+        /* ********* TAG FILTER ******** */
+        
+        $(document).on('click', '#clearFilter', function(){ 
+            $('.taskRow').show();
+            $('#tasksBoxFilter').text('');
+        });
+        
+        $(document).on('click', '.tag', function(e){ 
+            var selectedTag = $(this).text();
+            $('#tasksBoxFilter').html('Selected tag : #' + selectedTag + ' [<span id="clearFilter">clear</span>]');
+            $('.taskRow').not('.' + selectedTag).hide();
+            e.preventDefault();
+        });
+        
+        /* ****************************** */
+        /* ****************************** */
+        
+        /* ********* TASK ACTIONS (check & uncheck & delete) ******* */
+        
+        $(document).on('click', '.checker', function(){ 
+            var checkedId = $(this).attr('id');
+            $.each(allTasks, function(i, item) {
+                if (item.id == checkedId) {
+                    item.checked = true;
                     
-                    /* ********* DATA LOADER *********** */
+                    $('#todoListDone').append( addItemToListFinished(item.id, item.title) );
+                    $('#todoList #task' + item.id).remove();
                     
-                    // get current todos
-                    var allTasks = window.localStorage.getArray("tasks");
-                    if (allTasks) {
-                        $.each(allTasks, function(i, item) {
-                            if (item.checked) {
-                                $('#todoListDone').append( addItemToListFinished(item.id, item.title) );
-                            }
-                            else {
-                                addItemToListTodo(item.id, item.title);
-                            }
-                        });
+                    // check if there is a project and if it doesn't have any other tasks, let's delete it !!!
+                    var hasProject = extractProjectName(item.title);
+                    if (hasProject !== '' && !$("#project_" + hasProject + " div")[0]) {
+                        $("#project_" + hasProject).remove();
                     }
-                    else {
+                }
+            });
+            
+            window.localStorage.setArray("tasks", allTasks);
+        });
+        
+        $(document).on('click', '.unchecker', function(){ 
+            var uncheckedId = $(this).attr('id');
+            $.each(allTasks, function(i, item) {
+                if (item.id == uncheckedId) {
+                    item.checked = false;
+                    
+                    addItemToListTodo(item.id, item.title);
+                    $('#todoListDone #checkTask' + item.id).remove();
+                }
+            });
+            
+            window.localStorage.setArray("tasks", allTasks);
+        });
+        
+        $(document).on('click', '.editTask', function(){ 
+            console.log($(this).data('id'));
+        });
+
+        $(document).on('click', '.deleteTask', function(){ 
+            // 
+            // Delete confirmation was removed because it's not so funny to be asked each time 'are you sure???'
+            // I'll see in the future if this was a bad idea or not :)
+            //
+            // var sure = confirm('Delete?');
+            // if (sure) {
+                deletedId = $(this).data('id');
+                $.each(allTasks, function(i, item) {
+                    if (item && item.id == deletedId) {
+                        allTasks.splice(i, 1);
+                        $('#todoListDone #checkTask' + item.id).remove();
+                    }
+                });
+                window.localStorage.setArray("tasks", allTasks);
+            // }
+        });
+            
+        /* ****************************** */
+        /* ****************************** */
+        
+        /* ********* TASK ACTIONS (buttons) ******* */
+        
+        $('#clearAll').click(function() {
+            var sure = confirm('Are you sure you want to delete ALL the tasks?');
+            if (sure) {
+                localStorage.removeItem("tasks");
+                allTasks = new Array();
+                $('#todoList').html('');
+                $('#todoListDone').html('');
+            }
+        });
+        
+        // add items by pressing enter
+        $('#item').bind("enterKey",function(e){
+           $('#add').click()
+        });
+        $('#item').keyup(function(e){
+            if(e.keyCode == 13) {
+                $(this).trigger("enterKey");
+            }
+        });
+        
+        $('#add').click(function() {
+            if ($('#item').val() !== '') {
+                var $task = $('#item').val();
+                var $id = $.now();
+                
+                allTasks.push({ id: $id, title: $task, checked: false });
+                window.localStorage.setArray("tasks", allTasks);
+                
+                addItemToListTodo($id, $task);
+                $('#item').val('');
+                $('#item').focus();
+                
+            }
+        });
+        
+        /* ****************************** */
+        /* ****************************** */
+        
+        $('#notepad').blur(function() {
+            localStorage.setItem("notepad", $(this).val());
+            $('#notepadMessages').append('<div class="success">Your text has been successfully saved!</div>');
+            $("#notepadMessages .success").delay(2000).hide(400, function() { $(this).remove(); } );
+        });
+
+        /*
+            SETTINGS
+        */
+        $('#settingsPanelShow').click(function() {
+            $('#settingsPanel').show(200);
+        });
+        $('#settingsPanelHide').click(function() {
+            $('.settingsBox').hide(100);
+            $('#settingsPanel').hide(200);
+            $('.settingsItem').removeClass('activeSetting');
+        });
+
+        $('#export').click(function() {
+            var allTasksExporter = window.localStorage.getArray("tasks");
+            var itemData = '';
+            var dataArray = Array();
+
+            $('.settingsItem').removeClass('activeSetting');
+            $(this).addClass('activeSetting');
+            
+            $.each(allTasksExporter, function(index, item) {
+                 itemData = ( (item.checked) ? '1' : '0' ) + item.title;
+                 dataArray.push(itemData);
+            });
+            
+            $('.settingsBox').hide(100);
+            $('#taskExporter').html(JSON.stringify(dataArray));
+            $('#sExport').show(200);
+        });
+        
+        
+        $('#import').click(function() {
+            $('.settingsItem').removeClass('activeSetting');
+            $(this).addClass('activeSetting');
+
+            $('.settingsBox').hide(100);
+            $('#sImport').show(200);
+        });
+
+        $('#importTasks').click(function() {
+
+            var willRemoveExistingTasks = $('#importRemoveAllExisting').prop("checked");
+
+            var toImport = $('#taskImporter').val();
+            try {
+                toImportData = JSON.parse(toImport);
+            } catch (e) {
+                alert("Something's wrong with the import data. Please try again!")
+            }
+
+
+            if (toImportData.length > 0) {
+                var canAddTasks = true;
+                if (willRemoveExistingTasks) {
+                    var confirmMessage = 'Are you sure you want to import and remove all the current tasks?';
+                    var sure = confirm(confirmMessage);
+                    canAddTasks = false;
+                    if (sure) {
+                        localStorage.removeItem("tasks");
                         allTasks = new Array();
+                        $('#todoList').html('');
+                        $('#todoListDone').html('');
+                        
+                        canAddTasks = true;
                     }
+                }
 
+                if (canAddTasks) {
+                    $.each(toImportData, function(index, item) {
+                        var id = $.now();
 
-                    // get notepad
-                    var notepadText = localStorage.getItem("notepad");
-                    if (notepadText) {
-                        $('#notepad').val(notepadText);
-                    }
-                    
-                    /* ****************************** */
-                    /* ****************************** */
-                    
-                    /* ********* TAG FILTER ******** */
-                    
-                    $(document).on('click', '#clearFilter', function(){ 
-                        $('.taskRow').show();
-                        $('#tasksBoxFilter').text('');
-                    });
-                    
-                    $(document).on('click', '.tag', function(e){ 
-                        var selectedTag = $(this).text();
-                        $('#tasksBoxFilter').html('Selected tag : #' + selectedTag + ' [<span id="clearFilter">clear</span>]');
-                        $('.taskRow').not('.' + selectedTag).hide();
-                        e.preventDefault();
-                    });
-                    
-                    /* ****************************** */
-                    /* ****************************** */
-                    
-                    
-                    
-                    /* ********* TASK ACTIONS (check & uncheck & delete) ******* */
-                    
-                    $(document).on('click', '.checker', function(){ 
-                        var checkedId = $(this).attr('id');
-                        $.each(allTasks, function(i, item) {
-                            if (item.id == checkedId) {
-                                item.checked = true;
-                                
-                                $('#todoListDone').append( addItemToListFinished(item.id, item.title) );
-                                $('#todoList #task' + item.id).remove();
-                                
-                                // check if there is a project and if it doesn't have any other tasks, let's delete it !!!
-                                var hasProject = extractProjectName(item.title);
-                                if (hasProject !== '' && !$("#project_" + hasProject + " div")[0]) {
-                                    $("#project_" + hasProject).remove();
-                                }
-                            }
-                        });
-                        
+                        var itemDone = false;
+                        if (item.charAt(0) == 1) {
+                            itemDone = true;
+                        }
+                        var itemTitle = item.slice(1);
+
+                        console.log(allTasks);
+                        allTasks.push({ id: id, title: itemTitle, checked: itemDone });
                         window.localStorage.setArray("tasks", allTasks);
-                    });
-                    
-                    $(document).on('click', '.unchecker', function(){ 
-                        var uncheckedId = $(this).attr('id');
-                        $.each(allTasks, function(i, item) {
-                            if (item.id == uncheckedId) {
-                                item.checked = false;
-                                
-                                addItemToListTodo(item.id, item.title);
-                                $('#todoListDone #checkTask' + item.id).remove();
-                            }
-                        });
                         
-                        window.localStorage.setArray("tasks", allTasks);
-                    });
-                    
-                    $(document).on('click', '.editTask', function(){ 
-                        console.log($(this).data('id'));
-                    });
-
-                    $(document).on('click', '.deleteTask', function(){ 
-                        // 
-                        // Delete confirmation was removed because it's not so funny to be asked each time 'are you sure???'
-                        // I'll see in the future if this was a bad idea or not :)
-                        //
-                        // var sure = confirm('Delete?');
-                        // if (sure) {
-                            deletedId = $(this).data('id');
-                            $.each(allTasks, function(i, item) {
-                                if (item && item.id == deletedId) {
-                                    allTasks.splice(i, 1);
-                                    $('#todoListDone #checkTask' + item.id).remove();
-                                }
-                            });
-                            window.localStorage.setArray("tasks", allTasks);
-                        // }
-                    });
-                        
-                    /* ****************************** */
-                    /* ****************************** */
-                    
-                    /* ********* TASK ACTIONS (buttons) ******* */
-                    
-                    $('#clearAll').click(function() {
-                        var sure = confirm('Are you sure you want to delete ALL the tasks?');
-                        if (sure) {
-                            localStorage.removeItem("tasks");
-                            allTasks = new Array();
-                            $('#todoList').html('');
-                            $('#todoListDone').html('');
-                        }
-                    });
-                    
-                    // add items by pressing enter
-                    $('#item').bind("enterKey",function(e){
-                       $('#add').click()
-                    });
-                    $('#item').keyup(function(e){
-                        if(e.keyCode == 13) {
-                            $(this).trigger("enterKey");
-                        }
-                    });
-                    
-                    $('#add').click(function() {
-                        if ($('#item').val() !== '') {
-                            var $task = $('#item').val();
-                            var $id = $.now();
-                            
-                            allTasks.push({ id: $id, title: $task, checked: false });
-                            window.localStorage.setArray("tasks", allTasks);
-                            
-                            addItemToListTodo($id, $task);
-                            $('#item').val('');
-                            $('#item').focus();
-                            
-                        }
-                    });
-                    
-                    /* ****************************** */
-                    /* ****************************** */
-                    
-                    
-                    $('#notepad').blur(function() {
-                        localStorage.setItem("notepad", $(this).val());
-                        $('#notepadMessages').append('<div class="success">Your text has been successfully saved!</div>');
-                        $("#notepadMessages .success").delay(2000).hide(400, function() { $(this).remove(); } );
-                    });
-
-                    
-
-                    /*
-                        SETTINGS
-                    */
-                    $('#settingsPanelShow').click(function() {
-                        $('#settingsPanel').show(200);
-                    });
-                    $('#settingsPanelHide').click(function() {
-                        $('.settingsBox').hide(100);
-                        $('#settingsPanel').hide(200);
-                        $('.settingsItem').removeClass('activeSetting');
-                    });
-
-                    $('#export').click(function() {
-                        var allTasksExporter = window.localStorage.getArray("tasks");
-                        var itemData = '';
-                        var dataArray = Array();
-
-                        $('.settingsItem').removeClass('activeSetting');
-                        $(this).addClass('activeSetting');
-                        
-                        $.each(allTasksExporter, function(index, item) {
-                             itemData = ( (item.checked) ? '1' : '0' ) + item.title;
-                             dataArray.push(itemData);
-                        });
-                        
-                        $('.settingsBox').hide(100);
-                        $('#taskExporter').html(JSON.stringify(dataArray));
-                        $('#sExport').show(200);
-                    });
-                    
-                    
-                    $('#import').click(function() {
-                        $('.settingsItem').removeClass('activeSetting');
-                        $(this).addClass('activeSetting');
-
-                        $('.settingsBox').hide(100);
-                        $('#sImport').show(200);
-                    });
-
-                    $('#importTasks').click(function() {
-
-                        var willRemoveExistingTasks = $('#importRemoveAllExisting').prop("checked");
-
-                        var toImport = $('#taskImporter').val();
-                        try {
-                            toImportData = JSON.parse(toImport);
-                        } catch (e) {
-                            alert("Something's wrong with the import data. Please try again!")
-                        }
-
-
-                        if (toImportData.length > 0) {
-                            var canAddTasks = true;
-                            if (willRemoveExistingTasks) {
-                                var confirmMessage = 'Are you sure you want to import and remove all the current tasks?';
-                                var sure = confirm(confirmMessage);
-                                canAddTasks = false;
-                                if (sure) {
-                                    localStorage.removeItem("tasks");
-                                    allTasks = new Array();
-                                    $('#todoList').html('');
-                                    $('#todoListDone').html('');
-                                    
-                                    canAddTasks = true;
-                                }
-                            }
-
-                            if (canAddTasks) {
-                                $.each(toImportData, function(index, item) {
-                                    var id = $.now();
-
-                                    var itemDone = false;
-                                    if (item.charAt(0) == 1) {
-                                        itemDone = true;
-                                    }
-                                    var itemTitle = item.slice(1);
-
-                                    console.log(allTasks);
-                                    allTasks.push({ id: id, title: itemTitle, checked: itemDone });
-                                    window.localStorage.setArray("tasks", allTasks);
-                                    
-                                    if (itemDone) {
-                                        $('#todoListDone').append( addItemToListFinished(id, itemTitle) );
-                                    }
-                                    else {
-                                        addItemToListTodo(id, itemTitle);
-                                    }
-                                });
-                                alert('The tasks were successfully imported')
-                            }
+                        if (itemDone) {
+                            $('#todoListDone').append( addItemToListFinished(id, itemTitle) );
                         }
                         else {
-                            alert("Something's wrong with the import data. Please try again!")
+                            addItemToListTodo(id, itemTitle);
                         }
                     });
-
-
-                });
-                
-            } else {
-                // console.log('Ooops... no local storage!');
-                $(document).ready(function () {
-                    $('#todoList').append('<h1>Sorry, your browser doesn\'t support localStorage. Please upgrade!</h1>');
-                    $('#item').attr('disabled', true);
-                    $('#add').attr('disabled', true);
-                    $('#clear').attr('disabled', true);
-                });
+                    alert('The tasks were successfully imported')
+                }
             }
+            else {
+                alert("Something's wrong with the import data. Please try again!")
+            }
+        });
+
+
+    });
+    
+} else {
+    // console.log('Ooops... no local storage!');
+    $(document).ready(function () {
+        $('#todoList').append('<h1>Sorry, your browser doesn\'t support localStorage. Please upgrade!</h1>');
+        $('#item').attr('disabled', true);
+        $('#add').attr('disabled', true);
+        $('#clear').attr('disabled', true);
+    });
+}
