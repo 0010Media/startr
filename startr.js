@@ -20,6 +20,21 @@ function extractProjectName(title) {
     return projectName;
 }
 
+
+function replaceTaskName(id, oldTitle, newName) {
+    // TODO : replace the task if we did not change the project 
+    // rather than removing it and adding it at the end
+    $('#task' + id).remove();
+
+    // if we're going the change the project, let's clean the old project in case it has no more tasks in it
+    var hasProject = extractProjectName(oldTitle);
+    if (hasProject !== '' && !$("#project_" + hasProject + " div")[0]) {
+        $("#project_" + hasProject).remove();
+    }
+
+    addItemToListTodo(id, newName);
+}
+
 function addItemToListTodo(id, title) {
     var projects = '';
 
@@ -107,6 +122,8 @@ if (Modernizr.localstorage) {
         
         // get current todos
         var allTasks = window.localStorage.getArray("tasks");
+        var allTasksArray = new Array(); // used for renaming a task
+
         if (allTasks) {
             $.each(allTasks, function(i, item) {
                 if (item.checked) {
@@ -114,6 +131,7 @@ if (Modernizr.localstorage) {
                 }
                 else {
                     addItemToListTodo(item.id, item.title);
+                    allTasksArray[item.id] = item.title; // used for renaming a task
                 }
             });
         }
@@ -183,8 +201,25 @@ if (Modernizr.localstorage) {
             window.localStorage.setArray("tasks", allTasks);
         });
         
+        /*
+            Edit Task Name
+         */
         $(document).on('click', '.editTask', function(){ 
-            console.log($(this).data('id'));
+            var taskId = $(this).data('id');
+            var taskName = allTasksArray[$(this).data('id')];
+
+            var newName = prompt("Please edit the task name below : ", taskName);
+            
+            $.each(allTasks, function(i, item) {
+                if (item.id == taskId) {
+                    if (newName != null) {
+                        item.title = newName;
+                        replaceTaskName(taskId, taskName, newName);
+                        allTasksArray[taskId] = newName;
+                    }
+                }
+            });
+            window.localStorage.setArray("tasks", allTasks);
         });
 
         $(document).on('click', '.deleteTask', function(){ 
@@ -215,6 +250,7 @@ if (Modernizr.localstorage) {
             if (sure) {
                 localStorage.removeItem("tasks");
                 allTasks = new Array();
+                allTasksArray = new Array(); // used for renaming a task
                 $('#todoList').html('');
                 $('#todoListDone').html('');
             }
@@ -236,6 +272,7 @@ if (Modernizr.localstorage) {
                 var $id = $.now();
                 
                 allTasks.push({ id: $id, title: $task, checked: false });
+                allTasksArray[$id] = $task; // used for renaming a task
                 window.localStorage.setArray("tasks", allTasks);
                 
                 addItemToListTodo($id, $task);
@@ -314,6 +351,7 @@ if (Modernizr.localstorage) {
                     if (sure) {
                         localStorage.removeItem("tasks");
                         allTasks = new Array();
+                        allTasksArray = new Array(); // used for renaming a task
                         $('#todoList').html('');
                         $('#todoListDone').html('');
                         
@@ -331,8 +369,8 @@ if (Modernizr.localstorage) {
                         }
                         var itemTitle = item.slice(1);
 
-                        console.log(allTasks);
                         allTasks.push({ id: id, title: itemTitle, checked: itemDone });
+                        allTasksArray[id] = itemTitle; // used for renaming a task
                         window.localStorage.setArray("tasks", allTasks);
                         
                         if (itemDone) {
