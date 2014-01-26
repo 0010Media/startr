@@ -286,9 +286,12 @@ if (Modernizr.localstorage) {
         /* ****************************** */
         
         $('#notepad').blur(function() {
-            localStorage.setItem("notepad", $(this).val());
-            $('#notepadMessages').append('<div class="success">Your text has been successfully saved!</div>');
-            $("#notepadMessages .success").delay(2000).hide(400, function() { $(this).remove(); } );
+            if (notepadText !== $(this).val()) {
+                localStorage.setItem("notepad", $(this).val());
+                $('#notepadMessages').append('<div class="success">Your text has been successfully saved!</div>');
+                $("#notepadMessages .success").delay(2000).hide(400, function() { $(this).remove(); } );
+                notepadText = $(this).val();
+            }
         });
 
         /*
