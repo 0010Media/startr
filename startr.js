@@ -131,8 +131,8 @@ if (Modernizr.localstorage) {
                 }
                 else {
                     addItemToListTodo(item.id, item.title);
-                    allTasksArray[item.id] = item.title; // used for renaming a task
                 }
+                allTasksArray[item.id] = item.title; // used for renaming a task
             });
         }
         else {
