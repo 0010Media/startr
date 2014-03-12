@@ -21,6 +21,39 @@ Just clone the project, add the startr.html file somewhere on your disk or on a 
 Set it as your start page and enjoy it :)
 
 
+###Usage
+
+#####NOTEPAD : 
+
+The notepad text is automatically saved when the textbox loses its focus.
+
+#####TASKS : 
+A task contains : task name + tags + the project 
+
+######Tags
+The tags are defined as hashtags : `#my_tag` `#startr`
+
+> Please note that there are several tags that have by default different colors : #idea + #bug - you can always add others from the code :)
+
+######The Project Name
+Tasks can be grouped in projects. To add a project, just add the `@` symbol followed by the project name in the task name.
+
+
+######Examples
+
+The order of the tags and the project is not important : 
+
+`@startr Modify the README file #todo`  
+
+is the same as   
+
+`Modify the README file #todo @startr`  
+
+and as  
+
+`#todo Modify the README file @startr`  
+
+
 ###Features
 
 1. **Todo List** 
