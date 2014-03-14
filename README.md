@@ -62,10 +62,16 @@ and as
 
 #### Other ideas
 
+>  some of them will be implemented.... or all :) - who knows !
+
 1. Weather
-2. Google Calendar Agenda
-3. Links (open your favorite links quicker)
-4. ... will add more
+2. Google Calendar Agenda (display the events)
+3. Links (open your favorite links quicker - have a favicon list or text based list)
+4. Make `startr` available as a browser addon
+5. Add the date to the finished tasks (this way you can have an idea when a task was done)
+6. Allow the user to set a date to a task (will be eventually indicated in the interface by a small calendar icon displayed in front of the task's checkbox)
+7. Make the finished taks list smaller and scrollable (when you have a lot of finished tasks, the list becames ugly - grey and ugly). Or hide it by default and have a link (finished tasks) that will display the list. Anyway, the current display of the finished tasks list must be changed
+8. ...
  
 
 #### Author(s) :
