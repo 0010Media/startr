@@ -57,6 +57,9 @@
 body {
   background-color: #D5D5D5; }
 
+#startrTaskAddBox {
+  margin-bottom: 5px; }
+
 #item {
   width: 320px;
   font-size: 12px;
@@ -110,6 +113,11 @@ input[type="button"] {
 #todoList label, #settings label {
   font-size: 12px;
   vertical-align: 3px; }
+
+#todoListDoneTitle {
+  font-size: 14px;
+  margin: 10px 0;
+  color: #A0A0A0; }
 
 #todoListDone {
   color: #C0C0C0; }
