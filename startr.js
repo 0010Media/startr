@@ -246,7 +246,7 @@ if (Modernizr.localstorage) {
         /* ********* TASK ACTIONS (buttons) ******* */
         
         $('#clearAll').click(function() {
-            var sure = confirm('Are you sure you want to delete ALL the tasks?');
+            var sure = confirm('All the tasks (finished or not) will be deleted. \n\n Are you sure you want to delete them?');
             if (sure) {
                 localStorage.removeItem("tasks");
                 allTasks = new Array();
