@@ -35,6 +35,8 @@ The tags are defined as hashtags : `#my_tag` `#startr`
 
 > Please note that there are several tags that have by default different colors : #idea + #bug - you can always add others from the code :)
 
+You can easily display all the tasks associated to a tag by clicking on a tag name.  
+
 ######The Project Name
 Tasks can be grouped in projects. To add a project, just add the `@` symbol followed by the project name in the task name.
 
