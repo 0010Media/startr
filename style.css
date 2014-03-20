@@ -120,7 +120,12 @@ input[type="button"] {
   color: #A0A0A0; }
 
 #todoListDone {
-  color: #C0C0C0; }
+  height: 200px;
+  border: 1px #C0C0C0 solid;
+  overflow-y: scroll;
+  padding: 5px;
+  background-color: #F0F0F0;
+  color: #909090; }
 
 #todoListDone label {
   font-size: 12px;
